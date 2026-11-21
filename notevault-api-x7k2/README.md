@@ -151,34 +151,3 @@ npm run dev              # http://localhost:5001, check /health
 ```bash
 npm test
 ```
-
-* `test/offline.test.js` needs no database. It checks the declared indexes (so an accidental extra index fails the test), the pipeline shapes,
-  401/400/CORS guards, token tampering (expired, forged, `alg: none`) and operator-injection attempts.
-* `test/api.test.js` is the full integration suite: auth, notes CRUD and isolation between users, admin user management and cascade delete,
-  both aggregations with pagination, the exact index list in the live database, and `explain()` checks that the list queries and both
-  aggregations use the intended indexes.
-  It starts an in-memory MongoDB (the first run downloads a MongoDB binary, so it needs internet access). To use your own server instead:
-  `TEST_MONGODB_URI="mongodb+srv://..." npm test` (a throw-away database is created and dropped).
-
-## Deploy on Render (backend)
-
-1. Create a MongoDB Atlas cluster (free tier), a database user, and under **Network Access** allow `0.0.0.0/0`
-   (Render's free tier has no fixed outgoing IP). Copy the connection string and put your database name in it, for example `.../notevault?...`.
-2. Push the project to GitHub. In Render choose **New > Web Service** and connect the repository.
-3. Settings:
-   * Name: `notevault-api-x7k2` (the public URL follows this name)
-   * Root Directory: `notevault-api-x7k2` (if the repository contains both folders; leave empty if this folder is the repository root)
-   * Runtime: Node, Build Command: `npm install`, Start Command: `npm start`
-   * Health Check Path: `/health`
-   * Instance type: Free
-4. Environment variables: `MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `CORS_ORIGIN` (set it after the frontend is deployed).
-5. Deploy, then open `https://<service>.onrender.com/health`. It should answer `{"status":"ok"}`.
-
-Free instances go to sleep after a period without traffic, so the first request after a pause can take about a minute. The frontend shows
-a "Connecting to the server..." state for this reason.
-
-## Known limits
-
-* The token is stored in the browser's `localStorage` by the client. That is simple, but a script injected into the page could read it; an httpOnly cookie would avoid that at the cost of CSRF handling.
-* Aggregation 1 pushes all users of an interest into one group document, which is fine for this scope but would need a cap or a second query for very large groups.
-* `estimatedDocumentCount()` can be briefly off after an unclean shutdown; it is only used for the unfiltered "all users / all notes" totals.
