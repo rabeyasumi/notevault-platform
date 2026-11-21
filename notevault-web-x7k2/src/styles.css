@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #f4f5f7; color: #1d2330; }
+main, .auth { max-width: 860px; margin: 0 auto; padding: 16px; }
+.auth { margin-top: 10vh; max-width: 380px; }
+.center { text-align: center; margin-top: 20vh; }
+header { display: flex; align-items: center; gap: 12px; }
+header h1 { flex: 1; margin: 0; font-size: 1.4rem; }
+nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+nav .active { background: #1d2330; color: #fff; }
+.card { background: #fff; border: 1px solid #dfe2e8; border-radius: 8px; padding: 12px; margin: 10px 0; display: flex; flex-direction: column; gap: 8px; }
+.card h2, .card h3, .card h4, .card p { margin: 0; }
+input, textarea, select, button { font: inherit; padding: 7px 10px; border: 1px solid #c5cad3; border-radius: 6px; }
+input, textarea { width: 100%; }
+button { cursor: pointer; background: #fff; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+button.link { border: 0; background: none; color: #2457d6; }
+.row { display: flex; gap: 8px; align-items: center; }
+.pager { display: flex; gap: 12px; align-items: center; justify-content: center; margin: 12px 0; }
+.error { color: #b3261e; margin: 4px 0; }
+table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.9rem; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #e6e8ee; vertical-align: top; }
+code { font-size: 0.75rem; }
+small { color: #5b6475; }
